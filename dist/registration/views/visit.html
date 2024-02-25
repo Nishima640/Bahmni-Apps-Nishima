@@ -45,7 +45,52 @@
                         </div>
                     </section>
                     
-                                   
+                    <div class="form-field photocontainer-spacing clearfix">
+                        <div class="field-attribute">
+                            <label class="control-label" for="Charge">Copayment Charge :</label>
+                        </div>
+                        <div class="field-value">
+                            <input type="text" id="coPaymentInput" ng-model="coPayments">
+                        </div>
+                    </div>
+
+
+
+                    <!--div class="form-field photocontainer-spacing clearfix">
+                        <div class="field-attribute">
+                            <label class="control-label" for="Charge">Charge:</label>
+                        </div>
+                        <div class="field-value">
+                            <label class="control-label"><strong>{{ visitTypePrice }}</strong></label>
+                        </div>
+                    </div-->
+                    
+                     <div class="form-field photocontainer-spacing clearfix">
+                        <div class="field-attribute">
+                            <label class="control-label" for="Registration Fee">Registration Fee:</label>
+                        </div>
+                        <div class="field-value">
+                            <button type="button" class="default" ng-click="updateToFree()">Rs 0 </button>
+                            <button type="button" class="default" ng-click="updateToFollowUp()">Rs 10</button>
+                            <button type="button" class="default" ng-click="updateToOPD()">Rs 25</button>
+                            <button type="button" class="default" ng-click="updateToEmergency()">Rs 50</button>                            
+                        </div>
+                    </div>
+
+                 <toaster-container toaster-options="{'time-out': 1000,
+                    'position-class': 'toast-top-center',
+                    'close-button':true}"></toaster-container>
+
+                    <!-- qrcode data="string"></qrcode-->
+                    <!-- qr text="st"></qr-->
+                    <!--qrcode data="nnn" ></qrcode-->
+
+                    <!--qrcode data="string"></qrcode>
+                    <qr text="string"></qr-->
+
+
+                    
+                    <!-- <span ng-if="visitControl.selectedVisitType.name=='Proxy'">Rs 20</span>-->
                     <div class="submit-btn-container">
                         <br>
                         <button type="button" class="cancel" tabindex="-1" ng-show="::canCloseVisit" ng-click="closeVisitIfDischarged()">{{ ::'REGISTRATION_LABEL_CLOSE_VISIT' | translate}}
