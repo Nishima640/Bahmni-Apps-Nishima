@@ -1,0 +1,37 @@
+<div class="patient-info-fixed-postion-container" id="patientContext">
+    <div class="patient-info-fixed">
+        <ul>
+            <li class="patient-name-image-container">
+                <div ng-if="patient.gender=='M'">
+                  <img class="patient-image" ng-src="{{::patientContext.image}}" fallback-src="../images/blank-muser.png">
+                </div>
+                 <div ng-if="patient.gender=='F'">
+                  <img class="patient-image" ng-src="{{::patientContext.image}}" fallback-src="../images/blank-fuser.png">
+                </div>
+                 <div ng-if="patient.gender=='O'">
+                  <img class="patient-image" ng-src="{{::patientContext.image}}" fallback-src="../images/blank-ouser.png">
+                </div>
+                
+                <span class="patient-name" ng-if="showNameAndImage">
+                    {{patientContext.givenName}} {{patientContext.middleName}} {{patientContext.familyName}}
+                </span>
+                <span class="patient-name">
+                    ({{patientContext.identifier}}) 
+                </span>
+            </li>
+            <li>{{patientContext.gender}}</li>
+            <li>{{patientContext.birthdate | birthDateToAgeText}}</li>
+            <li ng-repeat="(key, value) in patientContext.additionalPatientIdentifiers">
+                {{key}}: {{value}}
+            </li>
+            <li ng-repeat="(key, value) in patientContext.personAttributes">
+                {{value.description}}: {{value.value}}
+            </li>
+            <li ng-repeat="(key, value) in patientContext.programAttributes">
+                {{value.description}}: {{value.value}}
+            </li>
+            <li ng-if="patientContext.nhisNumber">NHIS Number: {{patientContext.nhisNumber}}</li>
+            <li ng-if="patientContext.nhisMemberActive">NHIS Member: {{patientContext.nhisMemberActive}}</li>
+        </ul>
+    </div>
+</div>

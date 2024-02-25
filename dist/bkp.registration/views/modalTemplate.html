@@ -1,0 +1,86 @@
+<!--div class="modal-header">
+  <!--h3 class="modal-title" id="modal-title" style="color: #006273;">INSURANCE DETAIl</h3>
+</div-->
+ <link rel="stylesheet" href="views/modalBootstrap.css " />
+<div class="modal-body" id="modal-body" style="padding:53px 14px ">
+   <!--views/modalBootstrap.css https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css-->
+   
+   
+   <div class="container">
+               
+                     
+      <div class="btn btn-default btn-lg" style="margin-left: 112px; margin-top: -49px; transition-delay: 0.5s;">
+      <strong style="top:50%; right: 80%; height: 120px; margin: 10px; color: #006273; font-size: 30px;">{{nhisID}} </strong>
+           
+                        <div class="MuiGrid-root MuiGrid-container" bis_skin_checked="1">
+                        <div class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12" bis_skin_checked="1">
+                        <h5 class="MuiTypography-root jss83 MuiTypography-h6">{{insureeName}}</h5></div>
+                        <div class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12" bis_skin_checked="1">
+                        <h6 class="MuiTypography-root jss83 MuiTypography-h6">
+                        <span>{{ TimeStampNumberToDate}}</span>{{ageDiff}} </h6>
+                        </div>
+                        <div class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12" bis_skin_checked="1">
+                        <h6 class="MuiTypography-root jss83 MuiTypography-h6">{{gender}}</h6></div></div>
+      </div>  
+    </div>   
+    
+    <!--{{dateValue | date:'YYYY/MM/dd'}} timestamp can be converted with this filter way as well-->
+    
+       <!--input type="date" ng-model="testingmodel.testing" /-->   
+            
+      
+       
+
+  <h2 style="color: #006273;   transition-timing-function: linear;
+  transition-delay: 0.2s;">Family Policies</h2>
+                                                                                        
+  <div class="table-responsive">          
+  <table class="table table-hover" style=" position: absolute;
+  top-left: 1%; width:96%;   transition-timing-function: linear;
+  transition-delay: 0.2s;
+  ">
+    <thead style="  transition-timing-function: linear;
+  transition-delay: 0.2s;">
+      <tr >
+        <th style="color: #006273; font-size: 16px;">Name</th>
+        <th style="color: #006273; font-size: 16px; ">Status</th>
+        <th style="color: #006273; font-size: 16px; ">IPD</th>
+        <th style="color: #006273; font-size: 16px; ">OPD</th>
+        <th style="color: #006273; font-size: 16px; ">Balance</th>
+        
+      </tr>
+    </thead>
+    <tbody >
+      <tr>
+        <td class="MuiTableCell-root MuiTableCell-body jss173 jss184"  style="color: #006273; font-size:16px;">{{codeAccident}}</td>
+        <td class="MuiTableCell-root MuiTableCell-body jss173 jss184"  style="color: #006273  ; font-size: 16px;">{{statusAccident}}</td>
+        <td class="MuiTableCell-root MuiTableCell-body jss173 jss184"  style="color: #006273; font-size: 16px;">{{ipdAccidentBalance}}</td>
+        <td class="MuiTableCell-root MuiTableCell-body jss173 jss184" style="color: #006273; font-size: 16px;">{{opdAccidentBalance}}</td>
+        <td class="MuiTableCell-root MuiTableCell-body jss173 jss184"  style="color: #006273; font-size: 16px;">{{accidentBenefitBalance}}</td>
+        <!--td class="MuiTableCell-root MuiTableCell-body jss173 jss184" colspan="1" style="color: #006273; font-size: 16px;">{{dateValue | date : 'dd/MM/yyyy'}}</td-->
+        
+      </tr>
+      <tr>
+        <td style="color: #006273; font-size: 16px;">{{codeMedical}}</td>
+        <td style="color: #006273; font-size:16px;">{{statusMedical}}</td>
+        <td style="color: #006273; font-size: 16px;">{{ipdMedicalBalance}}</td>
+        <td style="color: #006273; font-size: 16px;">{{opdMedicalBalance}}</td>
+        <td style="color: #006273; font-size: 16px;">{{medicalBenefitBalance}}</td>
+        </tr>
+    
+    
+    </tbody>
+  </table>
+  </div>
+
+
+</div>
+            
+  
+<div class="modal-footer" style="padding:82px 21px">
+  <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+  
+</div>
+
+                    
+                
