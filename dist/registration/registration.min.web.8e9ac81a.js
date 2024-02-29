@@ -295,8 +295,7 @@ angular.module("bahmni.common.domain").factory("locationService", ["$http", "$ba
         })
     }
 }]), angular.module("bahmni.common.domain").service("visitService", ["$http", function($http) {
-    var coPaymentValue;
-    var departmentCoPaymentValue;
+    var coPaymentValue,departmentCoPaymentValue, coPaymentChangedValue;
     this.getVisit = function(uuid, params) {
         var parameters = params ? params : "custom:(uuid,visitId,visitType,patient,encounters:(uuid,encounterType,voided,orders:(uuid,orderType,voided,concept:(uuid,set,name),),obs:(uuid,value,concept,obsDatetime,groupMembers:(uuid,concept:(uuid,name),obsDatetime,value:(uuid,name),groupMembers:(uuid,concept:(uuid,name),value:(uuid,name),groupMembers:(uuid,concept:(uuid,name),value:(uuid,name)))))))";
         return $http.get(Bahmni.Common.Constants.visitUrl + "/" + uuid, {
@@ -312,7 +311,11 @@ angular.module("bahmni.common.domain").factory("locationService", ["$http", "$ba
         departmentCoPaymentValue = value
     },this.getDepartmentCoPayment = function(){
         return departmentCoPaymentValue
-    },this.endVisit = function(visitUuid) {
+    },this.setcoPaymentChanged = function(value){
+        coPaymentChangedValue = value
+    },this.getcoPaymentChanged = function(){
+        return coPaymentChangedValue
+    }, this.endVisit = function(visitUuid) {
         return $http.post(Bahmni.Common.Constants.endVisitUrl + "?visitUuid=" + visitUuid, {
             withCredentials: !0
         })

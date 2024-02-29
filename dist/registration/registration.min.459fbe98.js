@@ -95,6 +95,7 @@ Bahmni.Common = Bahmni.Common || {},
             conceptSearchByFullNameUrl: RESTWS_V1 + "/concept?s=byFullySpecifiedName",
             visitUrl: RESTWS_V1 + "/visit",
             endVisitUrl: BAHMNI_CORE + "/visit/endVisit",
+            changeVisit: BAHMNI_CORE + "/visit/updateVisit",
             endVisitAndCreateEncounterUrl: BAHMNI_CORE + "/visit/endVisitAndCreateEncounter",
             visitTypeUrl: RESTWS_V1 + "/visittype",
             patientImageUrlByPatientUuid: RESTWS_V1 + "/patientImage?patientUuid=",
@@ -1250,7 +1251,7 @@ Bahmni.Common = Bahmni.Common || {},
                     for (n && t.reverse(); e--;) {
                         var o = t[e];
                         if ("function" != typeof o) throw new uu("Expected a function");
-                        if (u && !i && "wrapper" == mr(o)) var i = new wn([], (!0))
+                        if (u && !i && "wrapper" == mr(o)) var i = new wn([], !0)
                     }
                     for (e = i ? e : r; ++e < r;) var o = t[e],
                         u = mr(o),
@@ -1508,7 +1509,7 @@ Bahmni.Common = Bahmni.Common || {},
                         return Gt(r);
                     case "[object Boolean]":
                     case "[object Date]":
-                        return new o((+r));
+                        return new o(+r);
                     case "[object Float32Array]":
                     case "[object Float64Array]":
                     case "[object Int8Array]":
@@ -1857,7 +1858,7 @@ Bahmni.Common = Bahmni.Common || {},
 
             function We(n) {
                 if (!n) return 0 === n ? n : 0;
-                if (n = Ce(n), n === q || n === -q) return 1.7976931348623157e308 * (0 > n ? -1 : 1);
+                if (n = Ce(n), n === q || n === -q) return 17976931348623157e292 * (0 > n ? -1 : 1);
                 var t = n % 1;
                 return n === n ? t ? n - t : n : 0
             }
@@ -1936,7 +1937,9 @@ Bahmni.Common = Bahmni.Common || {},
                 n = ze(n), t = We(t);
                 var r = "";
                 if (!n || 1 > t || t > 9007199254740991) return r;
-                do t % 2 && (r += n), t = Eu(t / 2), n += n; while (t);
+                do {
+                    t % 2 && (r += n), t = Eu(t / 2), n += n
+                } while (t);
                 return r
             }
 
@@ -2841,8 +2844,7 @@ Bahmni.Common = Bahmni.Common || {},
             }, yn.trimEnd = function(n, t, r) {
                 return (n = ze(n)) ? r || t === Z ? n.replace(an, "") : (t += "") ? (n = n.match(kn), n.slice(0, k(n, t.match(kn)) + 1).join("")) : n : n
             }, yn.trimStart = function(n, t, r) {
-                return (n = ze(n)) ? r || t === Z ? n.replace(cn, "") : (t += "") ? (n = n.match(kn),
-                    n.slice(O(n, t.match(kn))).join("")) : n : n
+                return (n = ze(n)) ? r || t === Z ? n.replace(cn, "") : (t += "") ? (n = n.match(kn), n.slice(O(n, t.match(kn))).join("")) : n : n
             }, yn.truncate = function(n, t) {
                 var r = 30,
                     e = "...";
@@ -3821,7 +3823,7 @@ Bahmni.Common = Bahmni.Common || {}, Bahmni.Common.Models = Bahmni.Common.Models
             visitType: visitType.name
         })
     }, self.startVisit = function(visitType) {
-        self.onStartVisit(), self.selectedVisitType = visitType
+        self.selectedVisitType = visitType, self.onStartVisit()
     }, self.createVisitOnly = function(patientUuid, visitLocationUuid) {
         var visitType = self.selectedVisitType || self.defaultVisitType,
             visitDetails = {
@@ -5460,7 +5462,7 @@ Bahmni.Common = Bahmni.Common || {}, Bahmni.Common.AppFramework = Bahmni.Common.
     };
     var deleteNullValuedKeys = function(currentObject) {
         return _.forOwn(currentObject, function(value, key) {
-            (_.isUndefined(value) || _.isNull(value) || _.isNaN(value) || _.isObject(value) && _.isNull(deleteNullValuedKeys(value))) && delete currentObject[key];
+            (_.isUndefined(value) || _.isNull(value) || _.isNaN(value) || _.isObject(value) && _.isNull(deleteNullValuedKeys(value))) && delete currentObject[key]
         }), currentObject
     }
 }]), angular.module("bahmni.common.patient", []), angular.module("bahmni.common.patient").filter("age", function() {
@@ -5920,7 +5922,7 @@ Bahmni.ConceptSet = Bahmni.ConceptSet || {}, Bahmni.ConceptSet.FormConditions = 
             },
             controller: controller
         }
-    }]), angular.module("bahmni.common.conceptSet").directive("concept", ["RecursionHelper", "spinner", "$filter", "messagingService", "appService", "visitService", function(RecursionHelper, spinner, $filter, messagingService, appService, visitService) {
+    }]), angular.module("bahmni.common.conceptSet").directive("concept", ["RecursionHelper", "spinner", "$filter", "messagingService", "appService","visitService", function(RecursionHelper, spinner, $filter, messagingService, appService, visitService) {
         var link = function(scope) {
                 scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue("displayNepaliDates"), scope.enableNepaliCalendar = appService.getAppDescriptor().getConfigValue("enableNepaliCalendar");
                 var hideAbnormalbuttonConfig = scope.observation && scope.observation.conceptUIConfig && scope.observation.conceptUIConfig.hideAbnormalButton;
@@ -5964,15 +5966,33 @@ Bahmni.ConceptSet = Bahmni.ConceptSet || {}, Bahmni.ConceptSet.FormConditions = 
                     scope.$root.$broadcast("event:observationUpdated-" + scope.conceptSetName, scope.observation.concept.name, scope.rootObservation)
                 }, scope.update = function(value) {
                     scope.getBooleanResult(scope.observation.isObservationNode) ? scope.observation.primaryObs.value = value : scope.getBooleanResult(scope.observation.isFormElement()) && (scope.observation.value = value), scope.handleUpdate()
-                    if(value.label == 'OPD'){
-                        scope.coPayments = 5;
-                        document.getElementById("coPaymentInput" ).value = scope.coPayments;
-                        visitService.setDepartmentCoPayment(value.label)
+                    scope.coPayment = window.location.href.split("=")[1];
+                    //if($scope.value == 'OPD' && $scope.coPayment == '0.1'){
+                    if(value.label == 'OPD' && scope.coPayment == '0.1'){
+                       scope.coPayments= 5;
+                       document.getElementById("coPaymentInput").value = scope.coPayments ;                                       
+                       visitService.setDepartmentCoPayment(value.label)
                       }
-                      else{
-                        document.getElementById("coPaymentInput" ).value = 'Copayment Not Applicable';
+                    else if(value.label == 'OPD' && scope.coPayment == '0'){
+                        scope.coPayments= 0;
+                        document.getElementById("coPaymentInput").value = scope.coPayments ;                                       
                         visitService.setDepartmentCoPayment(value.label)
-                      }
+                        visitService.setcoPaymentChanged(scope.coPayments)
+                        
+                        document.getElementById("coPaymentInput").addEventListener("input", function(event) {
+                        // Update the $scope.coPayments variable when the input value changes
+                            scope.$apply(function() {
+                                scope.coPayments = event.target.value;
+                                //console.log("Co-payment changed to:", scope.coPayments);
+                            });
+                            visitService.setcoPaymentChanged(scope.coPayments)
+                        })
+                        
+                    }
+                    else if(value.label == 'Emergency') {
+                        document.getElementById("coPaymentInput" ).value = '0';
+                        visitService.setDepartmentCoPayment(value.label)
+                    }
                 }, scope.getBooleanResult = function(value) {
                     return !!value
                 }
@@ -6091,7 +6111,7 @@ Bahmni.ConceptSet = Bahmni.ConceptSet || {}, Bahmni.ConceptSet.FormConditions = 
                             allow: !$scope.illegalDurationValue
                         }
                     };
-                    contextChangeHandler.add(contextChange);
+                    contextChangeHandler.add(contextChange)
                 });
                 $scope.$on("$destroy", function() {
                     $scope.illegalDurationValue = !1, illegalValueChecker()
@@ -6851,10 +6871,9 @@ Bahmni.ConceptSet = Bahmni.ConceptSet || {}, Bahmni.ConceptSet.FormConditions = 
                 }) || _.find(conceptSet.names, {
                     conceptNameType: "FULLY_SPECIFIED"
                 });
-                conceptName = conceptName ? conceptName.name : conceptName, self.label = conceptName || self.conceptName || self.options.conceptName,
-                    self.isLoaded = self.isOpen, self.collapseInnerSections = {
-                        value: !1
-                    }, self.uuid = conceptSet.uuid, self.alwaysShow = user.isFavouriteObsTemplate(self.conceptName), self.allowAddMore = config.allowAddMore, self.id = "concept-set-" + conceptSet.uuid
+                conceptName = conceptName ? conceptName.name : conceptName, self.label = conceptName || self.conceptName || self.options.conceptName, self.isLoaded = self.isOpen, self.collapseInnerSections = {
+                    value: !1
+                }, self.uuid = conceptSet.uuid, self.alwaysShow = user.isFavouriteObsTemplate(self.conceptName), self.allowAddMore = config.allowAddMore, self.id = "concept-set-" + conceptSet.uuid
             },
             getShowIfFunction = function() {
                 if (!self.showIfFunction) {
@@ -8022,7 +8041,7 @@ Bahmni.Common = Bahmni.Common || {}, Bahmni.Common.I18n = Bahmni.Common.I18n || 
     }
 }]);
 var Bahmni = Bahmni || {};
-Bahmni.Registration = Bahmni.Registration || {}, Bahmni.Registration.AttributesConditions = Bahmni.Registration.AttributesConditions || {}, angular.module("bahmni.registration", ["ui.router", "bahmni.common.config", "bahmni.common.domain", "bahmni.common.util", "bahmni.common.uiHelper", "bahmni.common.conceptSet", "infinite-scroll", "bahmni.common.patient", "bahmni.common.logging", "pascalprecht.translate"]), angular.module("registration", ["ui.router", "bahmni.registration", "authentication", "bahmni.common.config", "bahmni.common.appFramework", "httpErrorInterceptor", "bahmni.common.photoCapture", "bahmni.common.obs", "bahmni.common.displaycontrol.observation", "bahmni.common.i18n", "bahmni.common.displaycontrol.custom", "bahmni.common.routeErrorHandler", "bahmni.common.displaycontrol.pivottable", "RecursionHelper", "ngSanitize", "bahmni.common.uiHelper", "bahmni.common.domain", "ngDialog", "pascalprecht.translate", "ngCookies", "monospaced.elastic", "bahmni.common.displaycontrol.hint", "bahmni.common.attributeTypes", "bahmni.common.models", "bahmni.common.uicontrols", "bahmni.common.displaycontrol.diagnosis"]).config(["$urlRouterProvider", "$stateProvider", "$httpProvider", "$bahmniTranslateProvider", "$compileProvider", function($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
+Bahmni.Registration = Bahmni.Registration || {}, Bahmni.Registration.AttributesConditions = Bahmni.Registration.AttributesConditions || {}, angular.module("bahmni.registration", ["ui.router", "bahmni.common.config", "bahmni.common.domain", "bahmni.common.util", "bahmni.common.uiHelper", "bahmni.common.conceptSet", "infinite-scroll", "bahmni.common.patient", "bahmni.common.logging", "pascalprecht.translate"]), angular.module("registration", ["ui.router", "bahmni.registration", "authentication", "bahmni.common.config", "bahmni.common.appFramework", "httpErrorInterceptor", "bahmni.common.photoCapture", "bahmni.common.obs", "bahmni.common.displaycontrol.observation", "bahmni.common.i18n", "bahmni.common.displaycontrol.custom", "bahmni.common.routeErrorHandler", "bahmni.common.displaycontrol.pivottable", "RecursionHelper", "ngSanitize", "bahmni.common.uiHelper", "bahmni.common.domain", "ngDialog", "pascalprecht.translate", "ngCookies", "monospaced.elastic", "bahmni.common.displaycontrol.hint", "bahmni.common.attributeTypes", "bahmni.common.models", "bahmni.common.uicontrols", "bahmni.common.displaycontrol.diagnosis", "toaster"]).config(["$urlRouterProvider", "$stateProvider", "$httpProvider", "$bahmniTranslateProvider", "$compileProvider", function($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
     $httpProvider.defaults.headers.common["Disable-WWW-Authenticate"] = !0, $urlRouterProvider.otherwise("/search"), $compileProvider.debugInfoEnabled(!1), $stateProvider.state("search", {
         url: "/search",
         reloadOnSearch: !1,
@@ -8359,14 +8378,9 @@ Bahmni.Registration.Constants = {
         })
     };
     init()
-}]), angular.module("bahmni.registration").directive("printOptions", ["$rootScope", "registrationCardPrinter", "spinner", "appService", "$filter","visitService", function($rootScope, registrationCardPrinter, spinner, appService, $filter,visitService) {
+}]), angular.module("bahmni.registration").directive("printOptions", ["$rootScope", "registrationCardPrinter", "spinner", "appService", "$filter", "visitService", function($rootScope, registrationCardPrinter, spinner, appService, $filter, visitService) {
     var controller = function($scope) {
         $scope.printOptions = appService.getAppDescriptor().getConfigValue("printOptions"), $scope.defaultPrint = $scope.printOptions && $scope.printOptions[0];
-        //$scope.coPayment = visitService.getCoPayment();
-        var url = window.location.href;
-        $scope.coPayment=url.split("=")[1];
-
-
         var mapRegistrationObservations = function() {
             var obs = {};
             $scope.observations = $scope.observations || [];
@@ -8376,7 +8390,7 @@ Bahmni.Registration.Constants = {
             return $scope.observations.forEach(getValue), obs
         };
         $scope.print = function(option) {
-            return registrationCardPrinter.print(option.templateUrl, $scope.patient,$scope.coPayment, mapRegistrationObservations(), $scope.encounterDateTime)
+            return registrationCardPrinter.print(option.templateUrl, $scope.patient, $scope.visitTypePrice, $scope.coPayments, mapRegistrationObservations(), $scope.encounterDateTime)
         }, $scope.buttonText = function(option, type) {
             var printHtml = "",
                 optionValue = option && $filter("titleTranslate")(option);
@@ -8852,13 +8866,36 @@ Bahmni.Registration.Constants = {
         };
     $scope.handleUpdate = function(attribute) {
         var ruleFunction = Bahmni.Registration.AttributesConditions.rules && Bahmni.Registration.AttributesConditions.rules[attribute];
-        ruleFunction && executeRule(ruleFunction)
+        ruleFunction && executeRule(ruleFunction);
         if (attribute === "Eligibility Check") {
             var nhisNumber = $scope.patient["NHIS Number"];
             var xhr = new XMLHttpRequest;
             xhr.open("GET", window.location.origin + "/insurance/Eligibility.php?identifier=" + nhisNumber, true);
             xhr.onreadystatechange = function() {
+              if (xhr.status == 0){
+                // $scope.eligibilityCheckInProgress = true;
+                     
+                     Swal.fire({
+                         title: "No Internet Connection",
+                         text: "Do you want to proceed?",
+                         confirmButtonText: "Yes",
+                       }).then((result) => {
+                         /* Read more about isConfirmed, isDenied below */
+                         if (result.isConfirmed) {
+                            // $scope.eligibilityCheckInProgress = false;
+                             $scope.coPayment = 0;
+                             visitService.setCoPayment($scope.coPayment)
+                           Swal.fire("Ok", "", "success");
+                           var button = document.getElementById("Eligibility Check");
+                           button.disabled = true;
+                           
+                         } 
+                        
+                     });
+             }
+
                 xhr.onload = function() {
+                  if (xhr.status == 200){
                     var response = JSON.parse(xhr.responseText);
                     if (response.message == "Data not found") {
                         Swal.fire({
@@ -8923,6 +8960,7 @@ Bahmni.Registration.Constants = {
                         }
                         visitService.setCoPayment($scope.coPayment)
                     }
+                  }
                 }
             };
             xhr.send()
@@ -8936,7 +8974,7 @@ Bahmni.Registration.Constants = {
     $scope.$watch("patientLoaded", function() {
         $scope.patientLoaded && executeShowOrHideRules()
     }), $scope.getAutoCompleteList = function(attributeName, query, type) {
-        return patientAttributeService.search(attributeName, query, type);
+        return patientAttributeService.search(attributeName, query, type)
     }, $scope.getDataResults = function(data) {
         return data.results
     }, $scope.$watch("patient.familyName", function() {
@@ -8998,7 +9036,7 @@ Bahmni.Registration.Constants = {
             })
         },
         init = function() {
-            $scope.patient = patient.create(), prepopulateDefaultsInFields(), expandSectionsWithDefaultValue(), $scope.patientLoaded = !0
+            $scope.patient = patient.create(), console.log(patient), prepopulateDefaultsInFields(), expandSectionsWithDefaultValue(), $scope.patientLoaded = !0
         };
     init();
     var prepopulateFields = function() {
@@ -9243,7 +9281,7 @@ Bahmni.Registration.Constants = {
         templateUrl: "views/patientAction.html",
         controller: controller
     }
-}]), angular.module("bahmni.registration").controller("VisitController", ["$window", "$scope", "$rootScope", "$state", "$bahmniCookieStore", "patientService", "encounterService", "$stateParams", "spinner", "$timeout", "$q", "appService", "openmrsPatientMapper", "contextChangeHandler", "messagingService", "sessionService", "visitService", "$location", "$translate", "auditLogService", "formService", "patientServiceStrategy","$http", function($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, openmrsPatientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate, auditLogService, formService, patientServiceStrategy, $http) {
+}]), angular.module("bahmni.registration").controller("VisitController", ["$window", "$scope", "$rootScope", "$state", "$bahmniCookieStore", "patientService", "encounterService", "$stateParams", "spinner", "$timeout", "$q", "appService", "openmrsPatientMapper", "contextChangeHandler", "messagingService", "sessionService", "visitService", "$location", "$translate", "auditLogService", "formService", "patientServiceStrategy", "toaster", "$http", function($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, openmrsPatientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate, auditLogService, formService, patientServiceStrategy, toaster, $http) {
     var vm = this,
         patientUuid = $stateParams.patientUuid,
         extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config"),
@@ -9252,7 +9290,16 @@ Bahmni.Registration.Constants = {
         selectedProvider = $rootScope.currentProvider,
         regEncounterTypeUuid = $rootScope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.registrationEncounterType],
         visitLocationUuid = $rootScope.visitLocation,
-        getPatient = function() {
+        loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid,
+        defaultVisitType = $rootScope.regEncounterConfiguration.getDefaultVisitType(loginLocationUuid);
+    defaultVisitType = defaultVisitType || appService.getAppDescriptor().getConfigValue("defaultVisitType"), $scope.visitControl = new Bahmni.Common.VisitControl($rootScope.regEncounterConfiguration.getVisitTypesAsArray(), defaultVisitType, encounterService, $translate, visitService, patientService), $scope.visitControl.onStartVisit = function() {
+        $scope.setSubmitSource("startVisit")
+    }, $scope.setSubmitSource = function(source) {
+        $scope.actions.submitSource = source
+    }, $scope.showStartVisitButton = function() {
+        return showStartVisitButton
+    };
+    var getPatient = function() {
             var deferred = $q.defer();
             return patientService.get(patientUuid).then(function(openMRSPatient) {
                 deferred.resolve(openMRSPatient), $scope.patient = openmrsPatientMapper.map(openMRSPatient), $scope.patient.name = openMRSPatient.patient.person.names[0].display, $scope.patient.uuid = openMRSPatient.patient.uuid
@@ -9267,27 +9314,87 @@ Bahmni.Registration.Constants = {
                 locationUuid: locationUuid,
                 encounterTypeUuids: [regEncounterTypeUuid]
             }).then(function(response) {
-                deferred.resolve(response), $scope.encounterUuid = response.data.encounterUuid, $scope.observations = response.data.observations
-                $scope.value = visitService.getDepartmentCoPayment();
-                    if($scope.value == 'OPD'){
+                deferred.resolve(response), $scope.encounterUuid = response.data.encounterUuid, $scope.observations = response.data.observations;
+                var visitTypeUuid = response.data.visitTypeUuid;
+                visitService.getVisitType().then(function(visitTypeResponse) {
+                    var visitType = _.find(visitTypeResponse.data.results, function(type) {
+                        return type.uuid === visitTypeUuid
+                    });
+                    null != visitType && void 0 != visitType && ("OPD" === visitType.display ? $scope.visitTypePrice = "Rs 25" : "Proxy" === visitType.display ? $scope.visitTypePrice = "Rs 0" : "Follow up" === visitType.display ? $scope.visitTypePrice = "Rs 10" : "ANC" === visitType.display ? $scope.visitTypePrice = "Rs 0" : "Emergency" === visitType.display ? $scope.visitTypePrice = "Rs 50" : "IPD" === visitType.display ? $scope.visitTypePrice = "Rs 0" : "Free" === visitType.display && ($scope.visitTypePrice = "Rs 0"));
+                    // var locationhash = window.location.hash;
+                    // var copaymentDecimalValue = locationhash.split("=")[1];
+                    // $scope.coPayment = copaymentDecimalValue
+                    $scope.value = visitService.getDepartmentCoPayment();
+                  $scope.coPayment = window.location.href.split("=")[1];
+
+                  if ($scope.value === 'OPD' && $scope.coPayment === '0') {
+                    $scope.coPayments = visitService.getcoPaymentChanged();
+                    var updateCoPayments = function(value) {
+                        $scope.$apply(function() {
+                            $scope.coPayments = value;
+                        });
+                      };
+                    document.getElementById("coPaymentInput").addEventListener("input", function(event) {
+                      updateCoPayments(event.target.value);
+                      $scope.coPaymentChanged = function() {
+                          $scope.coPayments= event.target.value   
+                      }
+                      visitService.setcoPaymentChanged($scope.coPayments);
+                    })                      
+                  }
+                  else if($scope.value == 'OPD' && $scope.coPayment == '0.1'){
                       $scope.coPayments = 5
-                      document.getElementById("coPaymentInput" ).value = $scope.coPayments ;
-                    }
-                    else {
-                      document.getElementById("coPaymentInput" ).value = 'Copayment Not Applicable';
-                    }
-            }), deferred.promise
-        },
-        getAllForms = function() {
-            var deferred = $q.defer();
-            return formService.getFormList($scope.encounterUuid).then(function(response) {
-                $scope.conceptSets = extensions.map(function(extension) {
-                    return new Bahmni.ConceptSet.ConceptSetSection(extension, $rootScope.currentUser, {}, [], {})
-                }), $scope.observationForms = getObservationForms(formExtensions, response.data), $scope.conceptSets = $scope.conceptSets.concat($scope.observationForms), $scope.availableConceptSets = $scope.conceptSets.filter(function(conceptSet) {
-                    return conceptSet.isAvailable($scope.context)
-                }), deferred.resolve(response.data)
+                      document.getElementById("coPaymentInput" ).value = $scope.coPayments;
+                  }
+                  else if ($scope.value == 'Emergency'){
+                      document.getElementById("coPaymentInput" ).value = '0';
+                  }
+                })
             }), deferred.promise
         };
+    $scope.updateToEmergency = function() {
+        var visitId = 4;
+        visitService.changeVisit(visitId, patientUuid).then(function(visitId, patientUuid) {
+            $state.reload()
+        }), toaster.success({
+            title: "EMERGENCY",
+            body: "Changed to ER"
+        })
+    }, $scope.updateToOPD = function() {
+        var visitId = 5;
+        visitService.changeVisit(visitId, patientUuid).then(function(visitId, patientUuid) {
+            $state.reload()
+        }), toaster.success({
+            title: "OPD",
+            body: "Changed to OPD"
+        })
+    }, $scope.updateToFollowUp = function() {
+        var visitId = 9;
+        visitService.changeVisit(visitId, patientUuid).then(function(visitId, patientUuid) {
+            $state.reload()
+        }), toaster.success({
+            title: "FOLLOW UP",
+            body: "Changed to Followup"
+        })
+    }, $scope.updateToFree = function() {
+        var visitId = 10;
+        visitService.changeVisit(visitId, patientUuid).then(function(visitId, patientUuid) {
+            $state.reload()
+        }), toaster.success({
+            title: "FREE VISIT",
+            body: "Changed to Free Visit"
+        })
+    };
+    var getAllForms = function() {
+        var deferred = $q.defer();
+        return formService.getFormList($scope.encounterUuid).then(function(response) {
+            $scope.conceptSets = extensions.map(function(extension) {
+                return new Bahmni.ConceptSet.ConceptSetSection(extension, $rootScope.currentUser, {}, [], {})
+            }), $scope.observationForms = getObservationForms(formExtensions, response.data), $scope.conceptSets = $scope.conceptSets.concat($scope.observationForms), $scope.availableConceptSets = $scope.conceptSets.filter(function(conceptSet) {
+                return conceptSet.isAvailable($scope.context)
+            }), deferred.resolve(response.data)
+        }), deferred.promise
+    };
     $scope.hideFields = appService.getAppDescriptor().getConfigValue("hideFields"), $scope.back = function() {
         $state.go("patient.edit")
     }, $scope.updatePatientImage = function(image) {
@@ -9310,7 +9417,7 @@ Bahmni.Registration.Constants = {
             return spinner.forPromise(createPromise), createPromise.then(function(response) {
                 var visitUuid = response.data.visitUuid;
                 $http.get(window.location.origin + "/openmrs/ws/rest/v1/bahmnicore/sql?visitUuid=" + visitUuid + "&coPaymentFee=" + $scope.coPayment + "&q=bahmni.sqlGet.updateCoPaymentFee&v=full").then(function(response) {
-                    
+                    return console.log(response.data)
                 });
                 var messageParams = {
                     encounterUuid: response.data.encounterUuid,
@@ -9614,11 +9721,12 @@ Bahmni.Registration.Constants = {
         getAddressDataResults: getAddressDataResults
     }
 }]), angular.module("bahmni.registration").factory("registrationCardPrinter", ["printer", function(printer) {
-    var print = function(templatePath, patient, coPayment, obs, encounterDateTime) {
+    var print = function(templatePath, patient, visitTypePrice, coPayments, obs, encounterDateTime) {
         templatePath = templatePath || "views/nolayoutfound.html", printer.print(templatePath, {
             patient: patient,
             today: new Date,
-            coPayment: coPayment,
+            visitTypePrice: visitTypePrice,
+            coPayments: coPayments,
             obs: obs || {},
             encounterDateTime: encounterDateTime
         })

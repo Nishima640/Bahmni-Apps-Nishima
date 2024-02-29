@@ -45,16 +45,19 @@
                         </div>
                     </section>
                     
-                    <div class="form-field photocontainer-spacing clearfix">
-                        <div class="field-attribute">
-                            <label class="control-label" for="Charge">Copayment Charge :</label>
+                    
+                    <div ng-if = "patient['NHIS Number']">
+                        <div class="form-field photocontainer-spacing clearfix">
+                            <div class="field-attribute">
+                                <label class="control-label" for="Charge">Copayment Charge:</label>
+                            </div>
+                            <div class="field-value">
+                                <input type="number" id="coPaymentInput" ng-model="coPayments">
+                            </div>
                         </div>
-                        <div class="field-value">
-                            <input type="text" id="coPaymentInput" ng-model="coPayments">
-                        </div>
-                    </div>
-
-
+                    </div>                  
+                    
+                                                        
 
                     <!--div class="form-field photocontainer-spacing clearfix">
                         <div class="field-attribute">
@@ -65,15 +68,17 @@
                         </div>
                     </div-->
                     
-                     <div class="form-field photocontainer-spacing clearfix">
-                        <div class="field-attribute">
-                            <label class="control-label" for="Registration Fee">Registration Fee:</label>
-                        </div>
-                        <div class="field-value">
-                            <button type="button" class="default" ng-click="updateToFree()">Rs 0 </button>
-                            <button type="button" class="default" ng-click="updateToFollowUp()">Rs 10</button>
-                            <button type="button" class="default" ng-click="updateToOPD()">Rs 25</button>
-                            <button type="button" class="default" ng-click="updateToEmergency()">Rs 50</button>                            
+                    <div ng-if = "!patient['NHIS Number']">
+                        <div class="form-field photocontainer-spacing clearfix">
+                            <div class="field-attribute">
+                                <label class="control-label" for="Registration Fee">Registration Fee:</label>
+                            </div>
+                            <div class="field-value">
+                                <button type="button" class="default" ng-click="updateToFree()">Rs 0 </button>
+                                <button type="button" class="default" ng-click="updateToFollowUp()">Rs 10</button>
+                                <button type="button" class="default" ng-click="updateToOPD()">Rs 25</button>
+                                <button type="button" class="default" ng-click="updateToEmergency()">Rs 50</button>                            
+                            </div>
                         </div>
                     </div>
 
